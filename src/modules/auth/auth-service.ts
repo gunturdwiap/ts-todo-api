@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 import { config } from "../../config.js";
 import { prismaClient } from "../../database.js";
 import { ResponseError } from "../../error/response-error.js";
-import { AuthValidation } from "./auth-validation.js";
 
 export class AuthService {
 	static async login(email: string, password: string): Promise<string> {

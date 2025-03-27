@@ -2,7 +2,7 @@ import express from "express";
 import { config } from "./config.js";
 import { errorMiddleware } from "./middleware/error-middleware.js";
 import { authRouter } from "./modules/auth/auth-route.js";
-import { todoRouter } from "./modules/todo/todo-routes.js";
+import { todoRouter } from "./modules/todo/todo-route.js";
 
 const app = express();
 

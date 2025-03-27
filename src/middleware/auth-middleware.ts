@@ -1,29 +1,39 @@
-import type { NextFunction, Request, Response } from "express";
-import jwt, { type JwtPayload } from "jsonwebtoken";
+import type { NextFunction, Request, RequestHandler, Response } from "express";
+import jwt from "jsonwebtoken";
 import { config } from "../config.js";
+import { prismaClient } from "../database.js";
+import { ResponseError } from "../error/response-error.js";
 
-type UserRequest = Request & { user?: JwtPayload | string };
-
-export const authMiddleware = (
-	req: UserRequest,
+export const authMiddleware: RequestHandler = async (
+	req: Request,
 	res: Response,
 	next: NextFunction,
-): void => {
-	const token = req.headers.authorization?.split(" ")[1];
-
-	if (!token) {
-		res.status(403).json({ message: "Unauthorized" });
-		return; // Explicitly return to stop execution
-	}
-
+) => {
 	try {
-		const payload = jwt.verify(token, config.jwtSecretKey);
-		req.user = payload;
-		console.log("payload : ");
-		console.log(payload);
-		next(); // Do NOT return next();
+		const token = req.headers.authorization?.split(" ")[1];
+
+		if (!token) {
+			throw new ResponseError(403, "Unauthorized");
+		}
+		const payload = jwt.verify(token, config.jwtSecretKey) as { id: number };
+
+		const user = await prismaClient.user.findUnique({
+			where: {
+				id: payload.id,
+			},
+		});
+
+		if (!user) {
+			throw new ResponseError(403, "Unauthorized");
+		}
+
+		req.auth = {
+			id: user.id,
+			email: user.email,
+		};
+
+		next();
 	} catch (error) {
-		res.status(403).json({ error: "Invalid token" });
-		return; // Explicitly return
+		next(error);
 	}
 };

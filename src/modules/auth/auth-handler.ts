@@ -6,7 +6,7 @@ export const loginHandler = async (
 	req: Request,
 	res: Response,
 	next: NextFunction,
-): Promise<any> => {
+) => {
 	try {
 		const { email, password } = AuthValidation.login.parse(req.body);
 
