@@ -3,6 +3,7 @@ import { prismaClient } from "../../database.js";
 import { ResponseError } from "../../error/response-error.js";
 import { TodoValidation } from "./todo-validation.js";
 import { TodoService } from "./todo-service.js";
+import { z } from "zod";
 
 export const listTodoHandler = async (
 	req: Request,
@@ -10,10 +11,24 @@ export const listTodoHandler = async (
 	next: NextFunction,
 ) => {
 	try {
-		const todos = await TodoService.all(req.auth?.id as number);
+		const { page, limit } = z
+			.object({
+				page: z.coerce.number().int().min(1).default(1),
+				limit: z.coerce.number().int().min(1).max(100).default(10),
+			})
+			.parse(req.query);
+
+		const { todos, total } = await TodoService.all(
+			req.auth?.id as number,
+			page,
+			limit,
+		);
 
 		res.json({
 			data: todos,
+			page: page,
+			limit: limit,
+			total: total,
 		});
 	} catch (error) {
 		next(error);

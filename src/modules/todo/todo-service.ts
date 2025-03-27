@@ -2,14 +2,26 @@ import { Todo } from "@prisma/client";
 import { prismaClient } from "../../database.js";
 
 export class TodoService {
-	static async all(userId: number): Promise<Todo[]> {
+	static async all(
+		userId: number,
+		page: number = 0,
+		limit: number = 10,
+	): Promise<{ todos: Todo[]; total: number }> {
 		const todos = await prismaClient.todo.findMany({
+			skip: page * limit,
+			take: limit,
 			where: {
 				authorId: userId,
 			},
 		});
 
-		return todos;
+		const total = await prismaClient.todo.count({
+			where: {
+				authorId: userId,
+			},
+		});
+
+		return { todos, total };
 	}
 
 	static async get(id: number): Promise<Todo | null> {
