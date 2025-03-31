@@ -1,8 +1,8 @@
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 import jwt from "jsonwebtoken";
-import { config } from "../config.js";
-import { prismaClient } from "../database.js";
-import { ResponseError } from "../error/response-error.js";
+import { config } from "../config";
+import { prismaClient } from "../database";
+import { ResponseError } from "../error/response-error";
 
 export const authMiddleware: RequestHandler = async (
 	req: Request,
@@ -15,7 +15,7 @@ export const authMiddleware: RequestHandler = async (
 		if (!token) {
 			throw new ResponseError(403, "Unauthorized");
 		}
-		const payload = jwt.verify(token, config.jwtSecretKey) as { id: number };
+		const payload = jwt.verify(token, config.JWT_SECRET_KEY) as { id: number };
 
 		const user = await prismaClient.user.findUnique({
 			where: {

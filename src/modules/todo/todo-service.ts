@@ -1,14 +1,14 @@
 import { Todo } from "@prisma/client";
-import { prismaClient } from "../../database.js";
+import { prismaClient } from "../../database";
 
 export class TodoService {
 	static async all(
 		userId: number,
-		page: number = 0,
+		page: number = 1,
 		limit: number = 10,
 	): Promise<{ todos: Todo[]; total: number }> {
 		const todos = await prismaClient.todo.findMany({
-			skip: page * limit,
+			skip: (page-1) * limit,
 			take: limit,
 			where: {
 				authorId: userId,

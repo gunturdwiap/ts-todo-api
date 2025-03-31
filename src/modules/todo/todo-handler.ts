@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { prismaClient } from "../../database.js";
-import { ResponseError } from "../../error/response-error.js";
-import { TodoValidation } from "./todo-validation.js";
-import { TodoService } from "./todo-service.js";
+import { prismaClient } from "../../database";
+import { ResponseError } from "../../error/response-error";
+import { TodoValidation } from "./todo-validation";
+import { TodoService } from "./todo-service";
 import { z } from "zod";
 
 export const listTodoHandler = async (
@@ -23,6 +23,8 @@ export const listTodoHandler = async (
 			page,
 			limit,
 		);
+
+console.log(todos);
 
 		res.json({
 			data: todos,

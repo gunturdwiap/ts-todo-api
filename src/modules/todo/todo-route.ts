@@ -1,14 +1,14 @@
 import { NextFunction, Response, Request, Router } from "express";
-import { authMiddleware } from "../../middleware/auth-middleware.js";
+import { authMiddleware } from "../../middleware/auth-middleware";
 import {
 	destroyTodoHandler,
 	listTodoHandler,
 	showTodoHandler,
 	storeTodoHandler,
 	updateTodoHandler,
-} from "./todo-handler.js";
-import { prismaClient } from "../../database.js";
-import { ResponseError } from "../../error/response-error.js";
+} from "./todo-handler";
+import { prismaClient } from "../../database";
+import { ResponseError } from "../../error/response-error";
 
 export const todoRouter = Router();
 

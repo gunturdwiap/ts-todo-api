@@ -5,7 +5,8 @@ import type {
 	Response,
 } from "express";
 import { ZodError } from "zod";
-import { ResponseError } from "../error/response-error.js";
+import { ResponseError } from "../error/response-error";
+import { JsonWebTokenError } from "jsonwebtoken";
 
 export const errorMiddleware = (
 	err: ErrorRequestHandler,
@@ -19,6 +20,11 @@ export const errorMiddleware = (
 		});
 	} else if (err instanceof ResponseError) {
 		res.status(err.status).json({
+			message: err.message,
+		});
+
+	}else if (err instanceof JsonWebTokenError){
+		res.status(401).json({
 			message: err.message,
 		});
 	} else {

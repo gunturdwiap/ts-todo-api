@@ -1,10 +1,10 @@
 import express from "express";
-import { config } from "./config.js";
-import { errorMiddleware } from "./middleware/error-middleware.js";
-import { authRouter } from "./modules/auth/auth-route.js";
-import { todoRouter } from "./modules/todo/todo-route.js";
+import { config } from "./config";
+import { errorMiddleware } from "./middleware/error-middleware";
+import { authRouter } from "./modules/auth/auth-route";
+import { todoRouter } from "./modules/todo/todo-route";
 
-const app = express();
+export const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -21,7 +21,3 @@ app.use("/todos", todoRouter);
 app.use("/auth", authRouter);
 
 app.use(errorMiddleware);
-
-app.listen(config.port, () => {
-	console.log(`Example app listening on port ${config.port}`);
-});
