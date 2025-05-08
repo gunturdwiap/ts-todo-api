@@ -24,8 +24,6 @@ export const listTodoHandler = async (
 			limit,
 		);
 
-console.log(todos);
-
 		res.json({
 			data: todos,
 			page: page,

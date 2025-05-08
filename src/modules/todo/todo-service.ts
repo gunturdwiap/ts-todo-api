@@ -8,7 +8,7 @@ export class TodoService {
 		limit: number = 10,
 	): Promise<{ todos: Todo[]; total: number }> {
 		const todos = await prismaClient.todo.findMany({
-			skip: (page-1) * limit,
+			skip: (page - 1) * limit,
 			take: limit,
 			where: {
 				authorId: userId,

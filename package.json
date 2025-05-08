@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "set DATABASE_URL='file:./test.db' && npx prisma db push && jest",
+    "test": "set DATABASE_URL=file:./test.db && npx prisma db push && jest",
     "dev": "nodemon --env-file=.env dist/server.js",
     "format": "npx @biomejs/biome format --write ./src"
   },

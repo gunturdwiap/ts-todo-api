@@ -22,8 +22,7 @@ export const errorMiddleware = (
 		res.status(err.status).json({
 			message: err.message,
 		});
-
-	}else if (err instanceof JsonWebTokenError){
+	} else if (err instanceof JsonWebTokenError) {
 		res.status(401).json({
 			message: err.message,
 		});
