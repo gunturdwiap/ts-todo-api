@@ -6,6 +6,9 @@
     "test": "set DATABASE_URL=file:./test.db && npx prisma db push && jest",
     "dev": "nodemon --env-file=.env dist/server.js",
     "format": "npx @biomejs/biome format --write ./src"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "postinstall": "npm run build"
   },
   "jest": {
     "transform": {
